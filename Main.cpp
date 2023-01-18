@@ -1,29 +1,13 @@
 #include <iostream>
 #include<set>
 
-// This function checks for zeroes which represent blank spaces in a solution
-bool zeroCheck(unsigned int board[9][9])
-{
-    for (int i{}; i < 9; ++i)
-    {
-        for (int j{}; j < 9; ++j)
-        {
-            if (board[i][j] == 0)
-            {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-// This function checks rows for multiple occurences of the same number
+// This function checks rows for multiple occurences of the same number and ensures that there are no zeroes
 bool rowCheck(unsigned int board[9][9])
 {
     for (int i{}; i < 9; ++i)
     {
         std::set<int> rowSet(board[i], board[i] + 9);
-        if (rowSet.size() != 9)
+        if (rowSet.size() != 9 || rowSet.find(0) != rowSet.end() )
         {
             return false;
         }
@@ -46,7 +30,6 @@ bool colCheck(unsigned int board[9][9])
             return false;
         }
     }
-
     return true;
 }
 
@@ -75,13 +58,9 @@ bool gridCheck(unsigned int board[9][9])
 }
 
 
-// This function takes 
+// This function takes a sudoku in the form of a 9x9 array of unsigned integers from 0-9 (with 0 representing a blank space) and determines whether the sudoku is a valid solution
 bool validSolution(unsigned int board[9][9])
 {
-    if (!zeroCheck(board))
-    {
-        return false;
-    }
     if (!rowCheck(board))
     {
         return false;
@@ -126,8 +105,21 @@ int main()
         {3, 0, 0, 4, 8, 1, 1, 7, 9},
     };
 
+    unsigned int invalidSudoku2[9][9]{
+        {5, 3, 4, 6, 7, 8, 9, 0, 2},
+        {6, 7, 2, 1, 9, 5, 3, 4, 8},
+        {1, 9, 8, 3, 4, 2, 5, 6, 7},
+        {8, 5, 9, 7, 6, 1, 4, 2, 3},
+        {4, 2, 6, 8, 5, 3, 7, 9, 1},
+        {7, 1, 3, 9, 2, 4, 8, 5, 6},
+        {9, 6, 1, 5, 3, 7, 2, 8, 4},
+        {2, 8, 7, 4, 1, 9, 6, 3, 5},
+        {3, 4, 5, 2, 8, 6, 1, 7, 9},
+    };
+
     std::cout << std::boolalpha << validSolution(validSudoku) << '\n';
     std::cout << validSolution(invalidSudoku) << '\n';
+    std::cout << validSolution(invalidSudoku2) << '\n';
 
-	return 0;
+    return 0;
 }
